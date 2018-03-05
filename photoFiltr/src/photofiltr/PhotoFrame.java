@@ -1,17 +1,25 @@
 package photofiltr;
 
-import java.awt.HeadlessException;
-import java.io.IOException;
+import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 public class PhotoFrame extends JFrame{
-
-    public PhotoFrame() throws HeadlessException, IOException {
-        super();
+    
+    InterFacePicAndSlider picAndSliderPanel;
+    InterFaceButtons buttonsPanel;
+    
+    public PhotoFrame(){
+        super("Photo Filtr");
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable( false);
         
-        add( new PhotoPanel());
+        this.picAndSliderPanel = new InterFacePicAndSlider();
+        this.buttonsPanel = new InterFaceButtons( this.picAndSliderPanel);
+        
+        setLayout( new FlowLayout(1,0,0));
+        
+        add( this.picAndSliderPanel);
+        add( this.buttonsPanel);
         
         pack();
         setVisible(true);
