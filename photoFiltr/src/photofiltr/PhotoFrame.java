@@ -24,6 +24,4 @@ public class PhotoFrame extends JFrame{
         pack();
         setVisible(true);
     }
-    
-
 }
