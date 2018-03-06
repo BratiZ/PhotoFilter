@@ -50,7 +50,23 @@ public class InterFaceButtons extends JPanel {
         public void actionPerformed(ActionEvent ae) {
             Object source = ae.getSource();
 
-            if( source == buttons[4]){
+            if( source == buttons[0]){
+                IFPAS.choosePicture();
+            }
+            
+            else if( source == buttons[1]){
+                IFPAS.reset();
+            }
+            
+            else if( source == buttons[2]){
+                IFPAS.doLightUp();
+            }
+            
+            else if( source == buttons[3]){
+                IFPAS.doLightDown();
+            }
+            
+            else if( source == buttons[4]){
                 IFPAS.doNegative();
             }
         }
