@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,7 +22,8 @@ public class InterFacePicAndSlider extends JPanel{
     
     private SliderPanel sliderPanel;
     private ImgPanel imgPanel;
-
+    
+    
     public InterFacePicAndSlider() {
         super();
         
@@ -56,8 +56,11 @@ public class InterFacePicAndSlider extends JPanel{
     public void doLightDown(){
         this.imgPanel.LightDown( this.getSliderValue());
     }
-    public void choosePicture(){
-        System.out.println("choosePicture");
+    public void choosePicture( String path){
+        this.imgPanel.imagePath = path;
+        this.imgPanel.loadPicture();
+        repaint();
+        
     }
     public void reset(){
         this.imgPanel.ResetPicture();
@@ -104,17 +107,18 @@ public class InterFacePicAndSlider extends JPanel{
     class ImgPanel extends JPanel{
 
         private Image image;
-        
-        private int height = 440,
-                    width = 590;
+        private String imagePath;
 
         public ImgPanel() {
             super();
-
+            this.imagePath = "example.jpg";
             setPreferredSize( new Dimension( 600, 450));
-
+            this.loadPicture();
+        }
+        
+        private void loadPicture(){
             try{
-                this.image = ImageIO.read( new File( "example.jpg"));
+                this.image = ImageIO.read( new File( imagePath));
                 this.scalImg();
             }
             catch( Exception e){
@@ -123,23 +127,17 @@ public class InterFacePicAndSlider extends JPanel{
         }
         
         private void scalImg(){ 
-            if( this.image.getHeight( this) < 440 )
-                this.height = this.image.getHeight(this);
-
-            if( this.image.getWidth( this) < 590 )
-                this.width = this.image.getWidth(this);
             try{
-               this.image = this.image.getScaledInstance( width, height, 10);
+               this.image = this.image.getScaledInstance( 590, 450, 0);
                 
             }catch( Exception e){
                 System.out.println("Bad file.jpg scall" + "\n" + e + "\n");
             }
-
         }
         
         public void ResetPicture(){
             try{
-                this.image = ImageIO.read( new File( "example.jpg"));
+                this.image = ImageIO.read( new File( imagePath));
                 this.scalImg();
             }
             catch( IOException e){
@@ -265,7 +263,6 @@ public class InterFacePicAndSlider extends JPanel{
 
         @Override
         public void paint( Graphics g){
-            
             g.drawImage( image, 0, 0, this);
         }
 

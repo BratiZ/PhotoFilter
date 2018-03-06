@@ -4,11 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileFilter;
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class InterFaceButtons extends JPanel {
     
@@ -45,13 +50,32 @@ public class InterFaceButtons extends JPanel {
             this.setAlignmentX( CENTER_ALIGNMENT);
             addActionListener(this);
         }
-
+        
+        private String chooseFile(){
+            try{
+                JFrame frameTMP = new JFrame();
+                JFileChooser open = new JFileChooser();
+                FileNameExtensionFilter fileFilter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
+                
+                open.setFileFilter( fileFilter);
+                
+                open.showOpenDialog( frameTMP);
+                frameTMP.dispose();
+                
+                return open.getSelectedFile().getPath();    
+            }
+            catch( Exception e){
+                return "example.jpg";
+            }
+            
+        }
+        
         @Override
         public void actionPerformed(ActionEvent ae) {
             Object source = ae.getSource();
 
             if( source == buttons[0]){
-                IFPAS.choosePicture();
+                IFPAS.choosePicture( this.chooseFile());
             }
             
             else if( source == buttons[1]){
