@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileFilter;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -19,14 +18,14 @@ public class InterFaceButtons extends JPanel {
     
     private InterFacePicAndSlider IFPAS;
     private ButtonType[] buttons;
-    private final String[] buttonNames = { "Wybierz zdjecie", "Resetuj", "Rozjasnij", "Przyciemnij", "Negatyw"};
+    private final String[] buttonNames = { "Wybierz zdjecie", "Resetuj", "Rozjasnij", "Przyciemnij", "Negatyw", "Zapisz"};
     
     public InterFaceButtons( InterFacePicAndSlider IFPAS) {
         super();  
         
         this.IFPAS = IFPAS;
         this.setBorder( new EmptyBorder( 5, 5, 5, 5));
-        this.setPreferredSize( new Dimension( 200, 500));
+        this.setPreferredSize( new Dimension( 200, 400));
         this.setBackground( Color.GREEN);
         
         this.setLayout( new BoxLayout( this, BoxLayout.Y_AXIS));
@@ -92,6 +91,9 @@ public class InterFaceButtons extends JPanel {
             
             else if( source == buttons[4]){
                 IFPAS.doNegative();
+            }
+            else if( source == buttons[5]){
+                IFPAS.saveImage();
             }
         }
     }

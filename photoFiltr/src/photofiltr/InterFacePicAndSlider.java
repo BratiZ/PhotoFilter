@@ -27,8 +27,7 @@ public class InterFacePicAndSlider extends JPanel{
     public InterFacePicAndSlider() {
         super();
         
-        this.setBorder( new EmptyBorder(5, 5, 5, 5));
-        setPreferredSize( new Dimension( 600, 500));
+        setPreferredSize( new Dimension( 800, 400));
         setBackground( Color.GREEN);
         
         this.sliderPanel = new SliderPanel();
@@ -56,15 +55,21 @@ public class InterFacePicAndSlider extends JPanel{
     public void doLightDown(){
         this.imgPanel.LightDown( this.getSliderValue());
     }
+    
     public void choosePicture( String path){
         this.imgPanel.imagePath = path;
         this.imgPanel.loadPicture();
         repaint();
-        
     }
+    
     public void reset(){
         this.imgPanel.ResetPicture();
     }
+    
+    public void saveImage(){
+        this.imgPanel.saveImage();
+    }
+    
     //----
     class SliderPanel extends JPanel implements ChangeListener{
 
@@ -81,17 +86,17 @@ public class InterFacePicAndSlider extends JPanel{
             this.slider = new JSlider( JSlider.HORIZONTAL, 0, 255, 0);        
             this.slider.setPreferredSize( new Dimension( 550,30));
             this.slider.addChangeListener( this);
-
+            
             this.textSlider = new JTextField();
             this.textSlider.setText( this.slider.getValue() + "");
             this.textSlider.setPreferredSize( new Dimension( 30, 30));
-
+            
             this.add( this.slider);
             this.add( this.textSlider);
         }
 
         public int getSliderValue(){
-            return this.slider.getValue();
+            return Integer.parseInt( this.textSlider.getText());
         }
 
         @Override
@@ -106,7 +111,8 @@ public class InterFacePicAndSlider extends JPanel{
     //----
     class ImgPanel extends JPanel{
 
-        private Image image;
+        private Image image,
+                      imageOriginal;
         private String imagePath;
 
         public ImgPanel() {
@@ -114,11 +120,13 @@ public class InterFacePicAndSlider extends JPanel{
             this.imagePath = "example.jpg";
             setPreferredSize( new Dimension( 600, 450));
             this.loadPicture();
+            setBackground( Color.GREEN);
         }
         
         private void loadPicture(){
             try{
                 this.image = ImageIO.read( new File( imagePath));
+                this.imageOriginal = ImageIO.read( new File( imagePath));
                 this.scalImg();
             }
             catch( Exception e){
@@ -126,10 +134,21 @@ public class InterFacePicAndSlider extends JPanel{
             }
         }
         
+        public void saveImage(){
+            try{
+                File fileTMP = new File("savedImg.png");
+                BufferedImage bf = ((ToolkitImage) this.image).getBufferedImage();
+                ImageIO.write( bf, "png", fileTMP);
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+        }
+        
         private void scalImg(){ 
             try{
-               this.image = this.image.getScaledInstance( 590, 450, 0);
-                
+               this.image = this.image.getScaledInstance( 400, 350, 0);
+               this.imageOriginal = this.image.getScaledInstance( 400, 350, 0); 
             }catch( Exception e){
                 System.out.println("Bad file.jpg scall" + "\n" + e + "\n");
             }
@@ -138,6 +157,7 @@ public class InterFacePicAndSlider extends JPanel{
         public void ResetPicture(){
             try{
                 this.image = ImageIO.read( new File( imagePath));
+                this.imageOriginal = ImageIO.read( new File( imagePath));
                 this.scalImg();
             }
             catch( IOException e){
@@ -263,8 +283,9 @@ public class InterFacePicAndSlider extends JPanel{
 
         @Override
         public void paint( Graphics g){
-            g.drawImage( image, 0, 0, this);
+            super.paint(g);
+            g.drawImage( this.image, this.image.getWidth(imgPanel)+10, 5, this);
+            g.drawImage( this.imageOriginal, 5, 5, this);
         }
-
     }
 }
